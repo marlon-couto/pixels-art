@@ -73,10 +73,10 @@ function clearBoard() {
 
 color.forEach((element) => {
   element.addEventListener('click', () => {
-    element.className = 'color selected';
+    element.classList.add('selected');
     for (let index = 0; index < color.length; index += 1) {
       if (color[index] !== element) {
-        color[index].className = 'color';
+        color[index].classList.remove('selected');
       }
     }
   });
@@ -86,8 +86,8 @@ function pixelPaint() {
   const pixel = document.querySelectorAll('.pixel');
   pixel.forEach((element) => {
     element.addEventListener('click', () => {
-      const selected = document.querySelector('.selected');
-      element.style.backgroundColor = selected.style.backgroundColor;
+      const selectedColor = document.querySelector('.selected').style.backgroundColor;
+      element.style.setProperty('background-color', selectedColor);
       saveArt();
     });
   });
