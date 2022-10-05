@@ -54,12 +54,21 @@ function generatePixelBoard() {
   }
 }
 
+function saveArt() {
+  const pixel = document.querySelectorAll('.pixel');
+  const board = [];
+  pixel.forEach((element) => {
+    board.push(element.style.backgroundColor);
+  });
+  localStorage.setItem('pixelBoard', JSON.stringify(board));
+}
+
 function clearBoard() {
   const pixel = document.querySelectorAll('.pixel');
-
   for (let index = 0; index < pixel.length; index += 1) {
     pixel[index].style.backgroundColor = 'white';
   }
+  saveArt();
 }
 
 color.forEach((element) => {
@@ -75,20 +84,33 @@ color.forEach((element) => {
 
 function pixelPaint() {
   const pixel = document.querySelectorAll('.pixel');
-
   pixel.forEach((element) => {
     element.addEventListener('click', () => {
       const selected = document.querySelector('.selected');
       element.style.backgroundColor = selected.style.backgroundColor;
+      saveArt();
     });
   });
 }
 
 document.querySelector('#clear-board').addEventListener('click', clearBoard);
 
+function restoreArt() {
+  const pixel = document.querySelectorAll('.pixel');
+  const board = JSON.parse(localStorage.getItem('pixelBoard'));
+  for (let index = 0; index < board.length; index += 1) {
+    pixel[index].style.backgroundColor = board[index];
+  }
+}
+
 window.onload = () => {
   initialColors();
   generatePixelBoard();
-  clearBoard();
+
+  if (localStorage.getItem('pixelBoard') === null) {
+    clearBoard();
+  } else {
+    restoreArt();
+  }
   pixelPaint();
 };
