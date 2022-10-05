@@ -55,19 +55,6 @@ function generatePixelBoard(number) {
   }
 }
 
-generateBoardButton.addEventListener('click', () => {
-  const input = document.querySelector('#board-size');
-  const pixelBoard = document.querySelector('#pixel-board');
-
-  if (input.value === '') {
-    alert('Board inválido!');
-  } else if (input.value > 0) {
-    pixelBoard.innerHTML = '';
-    generatePixelBoard(input.value);
-    clearBoard();
-  }
-});
-
 function saveArt() {
   const pixel = document.querySelectorAll('.pixel');
   const board = [];
@@ -84,6 +71,30 @@ function clearBoard() {
   }
   saveArt();
 }
+
+function newBoard() {
+  const input = document.querySelector('#board-size');
+  const pixelBoard = document.querySelector('#pixel-board');
+  pixelBoard.innerHTML = '';
+  if (input.value >= 5 && input.value <= 50) {
+    generatePixelBoard(input.value);
+  } else if (input.value < 5) {
+    generatePixelBoard(5);
+  } else if (input.value > 50) {
+    generatePixelBoard(50);
+  }
+  clearBoard();
+}
+
+generateBoardButton.addEventListener('click', () => {
+  const input = document.querySelector('#board-size');
+
+  if (input.value === '') {
+    alert('Board inválido!');
+  } else {
+    newBoard();
+  }
+});
 
 color.forEach((element) => {
   element.addEventListener('click', () => {
