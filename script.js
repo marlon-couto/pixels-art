@@ -5,7 +5,7 @@ window.onload = function () {
   initialColors();
   generatePixelBoard();
   pixelColor();
-  selectColor();
+  color[0].className = 'color selected';
 };
 
 function changeBoxColors() {
@@ -69,7 +69,13 @@ function pixelColor() {
   }
 }
 
-function selectColor() {
-  const color = document.querySelectorAll('.color');
-  color[0].className += ' selected';
+for (const element of color) {
+  element.addEventListener('click', function (event) {
+    event.target.className = 'color selected';
+    for (let index = 0; index < color.length; index += 1) {
+      if (color[index] !== event.target) {
+        color[index].className = 'color';
+      }
+    }
+  });
 }
