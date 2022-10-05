@@ -1,4 +1,5 @@
 const randomButton = document.querySelector('#button-random-color');
+const generateBoardButton = document.querySelector('#generate-board');
 const color = document.querySelectorAll('.color');
 color[0].className = 'color selected';
 color[0].style.backgroundColor = 'black';
@@ -42,9 +43,9 @@ function initialColors() {
   }
 }
 
-function generatePixelBoard() {
+function generatePixelBoard(number) {
   const pixelBoard = document.querySelector('#pixel-board');
-  const size = 5;
+  const size = number;
   pixelBoard.style.height = `${size * 42}px`;
   pixelBoard.style.width = `${size * 42}px`;
 
@@ -53,6 +54,19 @@ function generatePixelBoard() {
     pixelBoard.lastChild.className = 'pixel';
   }
 }
+
+generateBoardButton.addEventListener('click', () => {
+  const input = document.querySelector('#board-size');
+  const pixelBoard = document.querySelector('#pixel-board');
+
+  if (input.value === '') {
+    alert('Board inválido!');
+  } else if (input.value > 0) {
+    pixelBoard.innerHTML = '';
+    generatePixelBoard(input.value);
+    clearBoard();
+  }
+});
 
 function saveArt() {
   const pixel = document.querySelectorAll('.pixel');
@@ -86,7 +100,8 @@ function pixelPaint() {
   const pixel = document.querySelectorAll('.pixel');
   pixel.forEach((element) => {
     element.addEventListener('click', () => {
-      const selectedColor = document.querySelector('.selected').style.backgroundColor;
+      const selectedColor =
+        document.querySelector('.selected').style.backgroundColor;
       element.style.setProperty('background-color', selectedColor);
       saveArt();
     });
@@ -105,7 +120,7 @@ function restoreArt() {
 
 window.onload = () => {
   initialColors();
-  generatePixelBoard();
+  generatePixelBoard(5);
 
   if (localStorage.getItem('pixelBoard') === null) {
     clearBoard();
