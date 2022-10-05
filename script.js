@@ -1,11 +1,13 @@
-const color = document.querySelectorAll('.color');
 const randomButton = document.querySelector('#button-random-color');
+const color = document.querySelectorAll('.color');
+color[0].className = 'color selected';
+color[0].style.backgroundColor = 'black';
 
 window.onload = function () {
   initialColors();
   generatePixelBoard();
-  pixelColor();
-  color[0].className = 'color selected';
+  clearBoard();
+  pixelPaint();
 };
 
 function changeBoxColors() {
@@ -61,7 +63,7 @@ function generatePixelBoard() {
   }
 }
 
-function pixelColor() {
+function clearBoard() {
   const pixel = document.querySelectorAll('.pixel');
 
   for (let index = 0; index < pixel.length; index += 1) {
@@ -78,4 +80,15 @@ for (const element of color) {
       }
     }
   });
+}
+
+function pixelPaint() {
+  const pixel = document.querySelectorAll('.pixel');
+
+  for (const element of pixel) {
+    element.addEventListener('click', function (event) {
+      event.target.style.backgroundColor =
+        document.querySelector('.selected').style.backgroundColor;
+    });
+  }
 }

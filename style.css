@@ -5,10 +5,6 @@
   display: inline-block;
 }
 
-#black {
-  background-color: black;
-}
-
 #button-random-color {
   margin: 5px auto;
 }
