@@ -18,17 +18,17 @@ function changeBoxColors() {
   }
 }
 
-function storeColors() {
+function saveColors() {
   const colorPalette = [];
   for (let index = 1; index < color.length; index += 1) {
     colorPalette[index - 1] = color[index].style.backgroundColor;
   }
-  return colorPalette;
+  localStorage.setItem('colorPalette', JSON.stringify(colorPalette));
 }
 
 randomButton.addEventListener('click', () => {
   changeBoxColors();
-  localStorage.setItem('colorPalette', JSON.stringify(storeColors()));
+  saveColors();
 });
 
 function initialColors() {
@@ -40,12 +40,16 @@ function initialColors() {
     }
   } else {
     changeBoxColors();
+    saveColors();
   }
 }
 
-function generatePixelBoard(number) {
+function saveBoard(inputValue) {
+  localStorage.setItem('boardSize', inputValue);
+}
+
+function generatePixelBoard(size) {
   const pixelBoard = document.querySelector('#pixel-board');
-  const size = number;
   pixelBoard.style.height = `${size * 42}px`;
   pixelBoard.style.width = `${size * 42}px`;
 
@@ -53,6 +57,7 @@ function generatePixelBoard(number) {
     pixelBoard.appendChild(document.createElement('div'));
     pixelBoard.lastChild.className = 'pixel';
   }
+  saveBoard(size);
 }
 
 function saveArt() {
@@ -72,6 +77,17 @@ function clearBoard() {
   saveArt();
 }
 
+function pixelPaint() {
+  const pixel = document.querySelectorAll('.pixel');
+  pixel.forEach((element) => {
+    element.addEventListener('click', () => {
+      const select = document.querySelector('.selected').style.backgroundColor;
+      element.style.setProperty('background-color', select);
+      saveArt();
+    });
+  });
+}
+
 function newBoard() {
   const input = document.querySelector('#board-size');
   const pixelBoard = document.querySelector('#pixel-board');
@@ -84,6 +100,7 @@ function newBoard() {
     generatePixelBoard(50);
   }
   clearBoard();
+  pixelPaint();
 }
 
 generateBoardButton.addEventListener('click', () => {
@@ -107,18 +124,6 @@ color.forEach((element) => {
   });
 });
 
-function pixelPaint() {
-  const pixel = document.querySelectorAll('.pixel');
-  pixel.forEach((element) => {
-    element.addEventListener('click', () => {
-      const selectedColor =
-        document.querySelector('.selected').style.backgroundColor;
-      element.style.setProperty('background-color', selectedColor);
-      saveArt();
-    });
-  });
-}
-
 document.querySelector('#clear-board').addEventListener('click', clearBoard);
 
 function restoreArt() {
@@ -129,10 +134,19 @@ function restoreArt() {
   }
 }
 
+function restoreBoard() {
+  const boardSize = JSON.parse(localStorage.getItem('boardSize'));
+  generatePixelBoard(boardSize);
+}
+
 window.onload = () => {
   initialColors();
-  generatePixelBoard(5);
 
+  if (localStorage.getItem('boardSize') === null) {
+    generatePixelBoard(5);
+  } else {
+    restoreBoard();
+  }
   if (localStorage.getItem('pixelBoard') === null) {
     clearBoard();
   } else {
