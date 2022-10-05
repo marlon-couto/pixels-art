@@ -3,6 +3,8 @@ const randomButton = document.querySelector('#button-random-color');
 
 window.onload = function () {
   initialColors();
+  generatePixelBoard();
+  pixelColor();
 };
 
 function changeBoxColors() {
@@ -43,5 +45,25 @@ function initialColors() {
     }
   } else {
     changeBoxColors();
+  }
+}
+
+function generatePixelBoard() {
+  const pixelBoard = document.querySelector('#pixel-board');
+  const size = 5;
+  pixelBoard.style.height = (size * 42).toString() + 'px';
+  pixelBoard.style.width = (size * 42).toString() + 'px';
+
+  for (let index = 0; index < size * size; index += 1) {
+    pixelBoard.appendChild(document.createElement('div'));
+    pixelBoard.lastChild.className = 'pixel';
+  }
+}
+
+function pixelColor() {
+  const pixel = document.querySelectorAll('.pixel');
+
+  for (let index = 0; index < pixel.length; index += 1) {
+    pixel[index].style.backgroundColor = 'white';
   }
 }
