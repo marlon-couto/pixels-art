@@ -5,6 +5,7 @@ window.onload = function () {
   initialColors();
   generatePixelBoard();
   pixelColor();
+  selectColor();
 };
 
 function changeBoxColors() {
@@ -66,4 +67,9 @@ function pixelColor() {
   for (let index = 0; index < pixel.length; index += 1) {
     pixel[index].style.backgroundColor = 'white';
   }
+}
+
+function selectColor() {
+  const color = document.querySelectorAll('.color');
+  color[0].className += ' selected';
 }
